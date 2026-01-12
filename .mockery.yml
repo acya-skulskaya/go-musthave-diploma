@@ -1,0 +1,24 @@
+all: false
+dir: '{{.InterfaceDir}}/mocks'
+filename: 'mock_{{.InterfaceName}}.go'
+force-file-write: true
+formatter: gofmt
+generate: true
+include-auto-generated: false
+log-level: info
+structname: '{{.Mock}}{{.InterfaceName}}'
+pkgname: 'mocks'
+recursive: false
+require-template-schema-exists: true
+template: testify
+template-schema: '{{.Template}}.schema.json'
+packages:
+  github.com/acya-skulskaya/go-musthave-diploma/internal/repository/balance:
+    interfaces:
+      BalanceRepositoryInterface:
+  github.com/acya-skulskaya/go-musthave-diploma/internal/repository/order:
+    interfaces:
+      OrderRepositoryInterface:
+  github.com/acya-skulskaya/go-musthave-diploma/internal/repository/user:
+    interfaces:
+      UserRepositoryInterface:
