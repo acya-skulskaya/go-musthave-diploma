@@ -23,3 +23,23 @@ git fetch template && git checkout template/master .github
 ```
 
 Затем добавьте полученные изменения в свой репозиторий.
+
+_________
+
+
+# Lint
+orig: https://github.com/s-shpak/praktikum-golangci-lint?tab=readme-ov-file
+
+# Mocks
+1. Install mockery https://vektra.github.io/mockery/latest/installation/
+2. Generate config `$ mockery init github.com/vektra/mockery/v3/internal/fixtures`
+3. Add packages to generate mocks, example
+
+```yaml 
+  packages:
+    github.com/acya-skulskaya/go-musthave-diploma/internal/repository/balance:
+      interfaces:
+        Balance:
+```
+   
+4. Generate mocks `$ mockery`
