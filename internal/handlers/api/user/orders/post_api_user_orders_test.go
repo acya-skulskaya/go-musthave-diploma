@@ -21,8 +21,7 @@ import (
 )
 
 func TestPostAPIUserOrders(t *testing.T) {
-	var successUserID uint
-	successUserID = 123
+	var successUserID uint = 123
 	successLogin := "success_login"
 	password := "success_password"
 	passwordHashed, _ := serviceAuth.HashPassword(password)
@@ -38,32 +37,32 @@ func TestPostAPIUserOrders(t *testing.T) {
 	balanceRepo := mocksBalance.NewMockBalanceRepositoryInterface(t)
 
 	orderRepo := mocksOrder.NewMockOrderRepositoryInterface(t)
-	orderId200 := "66886516672865"
-	orderId202 := "65273138"
-	orderId409 := "22230379"
+	orderID200 := "66886516672865"
+	orderID202 := "65273138"
+	orderID409 := "22230379"
 	setupMockOrder := func(m *mocksOrder.MockOrderRepositoryInterface) {
 		m.EXPECT().
-			Create(mock.Anything, mock.Anything, orderId200).
+			Create(mock.Anything, mock.Anything, orderID200).
 			Return(models.Order{
-				OrderNumber: orderId200,
+				OrderNumber: orderID200,
 				Status:      models.OrderStatusNew,
 				UserID:      successUserID,
 				Accrual:     0,
 			}, order.ErrOrderAlreadyExistsByCurrentUser)
 
 		m.EXPECT().
-			Create(mock.Anything, mock.Anything, orderId202).
+			Create(mock.Anything, mock.Anything, orderID202).
 			Return(models.Order{
-				OrderNumber: orderId202,
+				OrderNumber: orderID202,
 				Status:      models.OrderStatusNew,
 				UserID:      successUserID,
 				Accrual:     0,
 			}, nil)
 
 		m.EXPECT().
-			Create(mock.Anything, mock.Anything, orderId409).
+			Create(mock.Anything, mock.Anything, orderID409).
 			Return(models.Order{
-				OrderNumber: orderId409,
+				OrderNumber: orderID409,
 				Status:      models.OrderStatusNew,
 				UserID:      successUserID,
 				Accrual:     0,
@@ -93,30 +92,30 @@ func TestPostAPIUserOrders(t *testing.T) {
 
 	tests := []struct {
 		name     string
-		orderId  string
+		orderID  string
 		wantCode int
 	}{
 		{
 			name:     "200 — номер заказа уже был загружен этим пользователем",
-			orderId:  orderId200,
+			orderID:  orderID200,
 			wantCode: http.StatusOK,
 		}, {
 			name:     "202 — новый номер заказа принят в обработку",
-			orderId:  orderId202,
+			orderID:  orderID202,
 			wantCode: http.StatusAccepted,
 		}, {
 			name:     "409 — номер заказа уже был загружен другим пользователем",
-			orderId:  orderId409,
+			orderID:  orderID409,
 			wantCode: http.StatusConflict,
 		}, {
 			name:     "422 — неверный формат номера заказа",
-			orderId:  "123",
+			orderID:  "123",
 			wantCode: http.StatusUnprocessableEntity,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			bodyReader = strings.NewReader(tt.orderId)
+			bodyReader = strings.NewReader(tt.orderID)
 			request, err = http.NewRequest(http.MethodPost, testServer.URL+"/api/user/orders", bodyReader)
 			require.NoError(t, err)
 			for _, cookie := range cookies {
@@ -124,7 +123,7 @@ func TestPostAPIUserOrders(t *testing.T) {
 			}
 			//nolint:bodyclose // не понятно почему тут ругается, все закрывается
 			res, err = testServer.Client().Do(request)
-			require.NoError(t, err)
+			defer require.NoError(t, err)
 			res.Body.Close()
 
 			// проверяем код ответа

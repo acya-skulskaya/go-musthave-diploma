@@ -20,14 +20,11 @@ import (
 )
 
 func TestGetAPIUserOrders(t *testing.T) {
-	var successUserID uint
-	successUserID = 123
+	var successUserID uint = 123
 	successLogin := "success_login"
-	var noContentUserID uint
-	noContentUserID = 12345
+	var noContentUserID uint = 12345
 	noContentLogin := "no_content_login"
-	var internalServerErrorUserID uint
-	internalServerErrorUserID = 123456
+	var internalServerErrorUserID uint = 123456
 	internalServerErrorLogin := "internal_server_error_login"
 	password := "success_password"
 	passwordHashed, _ := serviceAuth.HashPassword(password)

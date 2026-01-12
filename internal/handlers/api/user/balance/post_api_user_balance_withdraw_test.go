@@ -21,8 +21,7 @@ import (
 )
 
 func TestPostAPIUserBalanceWithdraw(t *testing.T) {
-	var successUserID uint
-	successUserID = 123
+	var successUserID uint = 123
 	successLogin := "success_login"
 	successPassword := "success_password"
 	successPasswordHashed, _ := serviceAuth.HashPassword(successPassword)
@@ -100,7 +99,7 @@ func TestPostAPIUserBalanceWithdraw(t *testing.T) {
 			}
 			//nolint:bodyclose // не понятно почему тут ругается, все закрывается
 			res, err = testServer.Client().Do(request)
-			res.Body.Close()
+			defer res.Body.Close()
 			require.NoError(t, err)
 
 			// проверяем код ответа
