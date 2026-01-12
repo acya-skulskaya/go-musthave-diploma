@@ -123,7 +123,7 @@ func TestPostAPIUserOrders(t *testing.T) {
 			}
 			//nolint:bodyclose // не понятно почему тут ругается, все закрывается
 			res, err = testServer.Client().Do(request)
-			defer require.NoError(t, err)
+			require.NoError(t, err)
 			res.Body.Close()
 
 			// проверяем код ответа

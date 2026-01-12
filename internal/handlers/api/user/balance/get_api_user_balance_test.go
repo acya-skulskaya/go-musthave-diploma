@@ -81,8 +81,8 @@ func TestGetAPIUserBalance(t *testing.T) {
 			}
 			//nolint:bodyclose // не понятно почему тут ругается, все закрывается
 			res, err = testServer.Client().Do(request)
-			defer res.Body.Close()
 			require.NoError(t, err)
+			res.Body.Close()
 
 			// проверяем код ответа
 			assert.Equal(t, tt.wantCode, res.StatusCode)
